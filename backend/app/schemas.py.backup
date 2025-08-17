@@ -1,0 +1,291 @@
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from typing import Optional, List, Dict, Any
+from datetime import datetime, date
+from enum import Enum
+
+# Enums (matching PostgreSQL lowercase values)
+class AssetTypeEnum(str, Enum):
+    STOCK = "stock"
+    BOND = "bond"
+    FUND = "fund"
+    ETF = "etf"
+    CRYPTO = "crypto"
+    REAL_ESTATE = "real_estate"
+    COMMODITY = "commodity"
+    CASH = "cash"
+    OTHER = "other"
+
+class TransactionTypeEnum(str, Enum):
+    BUY = "buy"
+    SELL = "sell"
+    DIVIDEND = "dividend"
+    INTEREST = "interest"
+    DEPOSIT = "deposit"
+    WITHDRAW = "withdraw"
+    FEE = "fee"
+    TAX = "tax"
+
+class CurrencyEnum(str, Enum):
+    BRL = "BRL"
+    USD = "USD"
+    EUR = "EUR"
+    GBP = "GBP"
+    JPY = "JPY"
+
+# User Schemas
+class UserBase(BaseModel):
+    email: EmailStr
+    username: str
+
+class UserCreate(UserBase):
+    password: str
+
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = None
+    username: Optional[str] = None
+    password: Optional[str] = None
+
+class User(UserBase):
+    id: int
+    is_active: bool
+    created_at: datetime
+    updated_at: Optional[datetime]
+    
+    model_config = ConfigDict(from_attributes=True)
+
+# Token Schemas
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
+
+# Portfolio Schemas
+class PortfolioBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+    currency: CurrencyEnum = CurrencyEnum.BRL
+    benchmark: str = "CDI"
+
+class PortfolioCreate(PortfolioBase):
+    pass
+
+class PortfolioUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    currency: Optional[CurrencyEnum] = None
+    benchmark: Optional[str] = None
+
+class Portfolio(PortfolioBase):
+    id: int
+    owner_id: int
+    created_at: datetime
+    updated_at: Optional[datetime]
+    total_value: Optional[float] = None
+    total_invested: Optional[float] = None
+    total_return: Optional[float] = None
+    total_return_percentage: Optional[float] = None
+    
+    model_config = ConfigDict(from_attributes=True)
+
+# Asset Schemas
+class AssetBase(BaseModel):
+    symbol: str
+    name: str
+    asset_type: AssetTypeEnum
+    currency: CurrencyEnum = CurrencyEnum.BRL
+    isin: Optional[str] = None
+    cusip: Optional[str] = None
+    exchange: Optional[str] = None
+    sector: Optional[str] = None
+    industry: Optional[str] = None
+
+class AssetCreate(AssetBase):
+    pass
+
+class AssetUpdate(BaseModel):
+    name: Optional[str] = None
+    asset_type: Optional[AssetTypeEnum] = None
+    currency: Optional[CurrencyEnum] = None
+    exchange: Optional[str] = None
+    sector: Optional[str] = None
+    industry: Optional[str] = None
+
+class Asset(AssetBase):
+    id: int
+    created_at: datetime
+    updated_at: Optional[datetime]
+    current_price: Optional[float] = None
+    
+    model_config = ConfigDict(from_attributes=True)
+
+# Position Schemas
+class PositionBase(BaseModel):
+    portfolio_id: int
+    asset_id: int
+    quantity: float
+    average_price: float
+
+class PositionCreate(PositionBase):
+    pass
+
+class PositionUpdate(BaseModel):
+    quantity: Optional[float] = None
+    average_price: Optional[float] = None
+
+class Position(PositionBase):
+    id: int
+    current_price: Optional[float]
+    total_invested: float
+    current_value: Optional[float]
+    realized_pnl: float
+    unrealized_pnl: Optional[float]
+    dividends_received: float
+    last_updated: datetime
+    asset: Optional[Asset] = None
+    
+    model_config = ConfigDict(from_attributes=True)
+
+# Transaction Schemas
+class TransactionBase(BaseModel):
+    portfolio_id: int
+    asset_id: Optional[int] = None
+    transaction_type: TransactionTypeEnum
+    date: date
+    quantity: Optional[float] = None
+    price: Optional[float] = None
+    total_amount: float
+    fees: float = 0
+    taxes: float = 0
+    currency: CurrencyEnum = CurrencyEnum.BRL
+    exchange_rate: float = 1.0
+    notes: Optional[str] = None
+
+class TransactionCreate(TransactionBase):
+    pass
+
+class TransactionUpdate(BaseModel):
+    date: Optional[date] = None
+    quantity: Optional[float] = None
+    price: Optional[float] = None
+    total_amount: Optional[float] = None
+    fees: Optional[float] = None
+    taxes: Optional[float] = None
+    notes: Optional[str] = None
+
+class Transaction(TransactionBase):
+    id: int
+    created_at: datetime
+    asset: Optional[Asset] = None
+    
+    model_config = ConfigDict(from_attributes=True)
+
+# Price Schemas
+class PriceBase(BaseModel):
+    asset_id: int
+    date: date
+    open: Optional[float] = None
+    high: Optional[float] = None
+    low: Optional[float] = None
+    close: float
+    volume: Optional[float] = None
+    adjusted_close: Optional[float] = None
+
+class PriceCreate(PriceBase):
+    pass
+
+class Price(PriceBase):
+    id: int
+    created_at: datetime
+    
+    model_config = ConfigDict(from_attributes=True)
+
+# Exchange Rate Schemas
+class ExchangeRateBase(BaseModel):
+    from_currency: CurrencyEnum
+    to_currency: CurrencyEnum
+    date: date
+    rate: float
+
+class ExchangeRateCreate(ExchangeRateBase):
+    pass
+
+class ExchangeRate(ExchangeRateBase):
+    id: int
+    created_at: datetime
+    
+    model_config = ConfigDict(from_attributes=True)
+
+# Alert Schemas
+class AlertBase(BaseModel):
+    alert_type: str
+    condition: Dict[str, Any]
+    message: Optional[str] = None
+    is_active: bool = True
+
+class AlertCreate(AlertBase):
+    pass
+
+class AlertUpdate(BaseModel):
+    condition: Optional[Dict[str, Any]] = None
+    message: Optional[str] = None
+    is_active: Optional[bool] = None
+
+class Alert(AlertBase):
+    id: int
+    user_id: int
+    last_triggered: Optional[datetime]
+    created_at: datetime
+    
+    model_config = ConfigDict(from_attributes=True)
+
+# Dashboard Schemas
+class PortfolioSummary(BaseModel):
+    portfolio_id: int
+    portfolio_name: str
+    total_value: float
+    total_invested: float
+    total_return: float
+    total_return_percentage: float
+    currency: str
+    positions_count: int
+    last_update: datetime
+
+class AssetAllocation(BaseModel):
+    asset_type: str
+    value: float
+    percentage: float
+    count: int
+
+class PerformanceMetrics(BaseModel):
+    daily_return: Optional[float]
+    monthly_return: Optional[float]
+    yearly_return: Optional[float]
+    volatility: Optional[float]
+    sharpe_ratio: Optional[float]
+    max_drawdown: Optional[float]
+    beta: Optional[float]
+    alpha: Optional[float]
+
+class DashboardData(BaseModel):
+    portfolios: List[PortfolioSummary]
+    total_patrimony: float
+    total_invested: float
+    total_return: float
+    total_return_percentage: float
+    asset_allocation: List[AssetAllocation]
+    performance_metrics: PerformanceMetrics
+    recent_transactions: List[Transaction]
+
+# Import/Export Schemas
+class ImportRequest(BaseModel):
+    portfolio_id: int
+    file_format: str  # csv, excel, ofx
+    file_content: str  # Base64 encoded file content
+
+class ImportResponse(BaseModel):
+    success: bool
+    message: str
+    imported_count: int
+    errors: List[str] = []
