@@ -201,4 +201,4 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ---
 
-**Desenvolvido com ❤️ para gestão inteligente de investimentos**
+**Desenvolvido com ❤️ para gestão inteligente de investimentos**# Deploy trigger Seg 18 Ago 2025 00:30:27 -03
