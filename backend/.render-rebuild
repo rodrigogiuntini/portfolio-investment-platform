@@ -1,0 +1,7 @@
+# Force Render rebuild - timestamp: 2025-01-18T00:33:00Z
+# This file forces Render to do a complete rebuild
+# Issue: email-validator not being installed despite being in requirements.txt
+# Solutions applied:
+# 1. pydantic[email] syntax
+# 2. email-validator==2.1.0 pinned version
+# 3. This file to trigger rebuild detection
