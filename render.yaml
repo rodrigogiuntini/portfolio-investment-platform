@@ -17,4 +17,4 @@ services:
       - key: BACKEND_CORS_ORIGINS
         value: '["https://portfolio-investment-platform.vercel.app"]'
       - key: PYTHON_VERSION
-        value: "3.11"
+        value: "3.11.9"
