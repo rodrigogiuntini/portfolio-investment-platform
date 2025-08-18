@@ -20,3 +20,4 @@ httpx>=0.25.0
 aiohttp>=3.8.0
 psycopg2-binary>=2.9.7
 email-validator==2.1.0
+# Force redeploy after database schema fix - Seg 18 Ago 2025 00:54:24 -03
