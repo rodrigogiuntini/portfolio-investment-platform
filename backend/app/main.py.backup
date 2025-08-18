@@ -12,7 +12,7 @@ from .routers import portfolios, assets, transactions, dashboard, imports, user_
 
 # Create database tables - wrapped in try/catch for deployment
 try:
-    # models.Base.metadata.create_all(bind=engine)
+    models.Base.metadata.create_all(bind=engine)
     print("✅ Database tables created successfully")
 except Exception as e:
     print(f"⚠️ Database connection failed: {e}")
