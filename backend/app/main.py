@@ -10,8 +10,13 @@ from .database import engine, get_db
 from .config import settings
 from .routers import portfolios, assets, transactions, dashboard, imports, user_settings, dividends, optimization, notifications
 
-# Create database tables
-models.Base.metadata.create_all(bind=engine)
+# Create database tables - wrapped in try/catch for deployment
+try:
+    models.Base.metadata.create_all(bind=engine)
+    print("✅ Database tables created successfully")
+except Exception as e:
+    print(f"⚠️ Database connection failed: {e}")
+    print("App will start without database connection")
 
 app = FastAPI(
     title="Portfolio Investment Platform",
@@ -39,9 +44,14 @@ app.include_router(dividends.router, prefix="/api/dividends", tags=["dividends"]
 app.include_router(optimization.router, prefix="/api/optimization", tags=["optimization"])
 app.include_router(notifications.router, prefix="/api/notifications", tags=["notifications"])
 
+# Simple health check endpoint
+@app.get("/api/health")
+async def health_check():
+    return {"status": "healthy", "message": "Portfolio Investment Platform API is running"}
+
 @app.get("/")
-def read_root():
-    return {"message": "Portfolio Investment Platform API", "version": "1.0.0"}
+async def root():
+    return {"message": "Portfolio Investment Platform API", "status": "running", "version": "1.0.0"}
 
 @app.post("/api/register", response_model=schemas.User)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
