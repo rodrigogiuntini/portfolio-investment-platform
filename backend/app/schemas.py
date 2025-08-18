@@ -1,4 +1,6 @@
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict
+# Temporarily removed EmailStr to avoid email-validator dependency issues
+# from pydantic import EmailStr
 from typing import Optional, List, Dict, Any
 from datetime import datetime, date
 from enum import Enum
@@ -51,7 +53,7 @@ class ChartTypeEnum(str, Enum):
 
 # User Schemas
 class UserBase(BaseModel):
-    email: EmailStr
+    email: str  # Temporarily using str instead of EmailStr
     username: str
 
 class UserCreate(UserBase):
