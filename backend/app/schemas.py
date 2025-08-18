@@ -60,7 +60,7 @@ class UserCreate(UserBase):
     password: str
 
 class UserUpdate(BaseModel):
-    email: Optional[EmailStr] = None
+    email: Optional[str] = None  # Temporarily using str instead of EmailStr
     username: Optional[str] = None
     password: Optional[str] = None
 
