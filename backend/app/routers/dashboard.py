@@ -15,129 +15,47 @@ def get_dashboard(
 ):
     """Get dashboard data for current user"""
     try:
-        # Get all portfolios             
+        # Get all portfolios (simplified)
         portfolios = db.query(models.Portfolio).filter(
             models.Portfolio.owner_id == current_user.id
         ).all()
         
         portfolio_summaries = []
-        total_patrimony = 0
-        total_invested = 0
-        total_return = 0
         
-        # Calculate values for each portfolio (simplified version)
+        # Simple portfolio summaries without complex calculations
         for portfolio in portfolios:
-            try:
-                # Try to calculate with PortfolioCalculator
-                calc = PortfolioCalculator(db)
-                values = calc.calculate_portfolio_value(portfolio.id)
-            except Exception as e:
-                print(f"Warning: PortfolioCalculator failed: {e}")
-                # Fallback to simple calculation
-                values = {
-                    'total_value': 0,
-                    'total_invested': 0,
-                    'total_return': 0,
-                    'total_return_percentage': 0,
-                    'positions_count': 0
-                }
-            
             summary = schemas.PortfolioSummary(
                 portfolio_id=portfolio.id,
                 portfolio_name=portfolio.name,
-                total_value=values.get('total_value', 0),
-                total_invested=values.get('total_invested', 0),
-                total_return=values.get('total_return', 0),
-                total_return_percentage=values.get('total_return_percentage', 0),
+                total_value=0,
+                total_invested=0,
+                total_return=0,
+                total_return_percentage=0,
                 currency=portfolio.currency,
-                positions_count=values.get('positions_count', 0),
+                positions_count=0,
                 last_update=datetime.utcnow()
             )
-            
             portfolio_summaries.append(summary)
-            
-            # Convert to BRL for total calculation (simplified)
-            if portfolio.currency == models.Currency.BRL:
-                total_patrimony += values.get('total_value', 0)
-                total_invested += values.get('total_invested', 0)
-            total_return += values.get('total_return', 0)
         
-        # Calculate total return percentage
-        total_return_percentage = (total_return / total_invested * 100) if total_invested > 0 else 0
-        
-        # Calculate asset allocation across all portfolios (simplified)
-        asset_allocation = []
-        try:
-            allocation_map = {}
-            
-            for portfolio in portfolios:
-                # Try to get positions for this portfolio
-                try:
-                    positions = db.query(models.Position).filter(
-                        models.Position.portfolio_id == portfolio.id
-                    ).all()
-                    
-                    for position in positions:
-                        asset_type = position.asset.asset_type.value if position.asset else "UNKNOWN"
-                        current_value = position.current_value or 0
-                        
-                        if asset_type not in allocation_map:
-                            allocation_map[asset_type] = {'value': 0, 'count': 0}
-                        
-                        allocation_map[asset_type]['value'] += current_value
-                        allocation_map[asset_type]['count'] += 1
-                except Exception as e:
-                    print(f"Warning: Could not fetch positions for portfolio {portfolio.id}: {e}")
-                    continue
-            
-            # Convert to list format
-            for asset_type, data in allocation_map.items():
-                percentage = (data['value'] / total_patrimony * 100) if total_patrimony > 0 else 0
-                asset_allocation.append(schemas.AssetAllocation(
-                    asset_type=asset_type,
-                    value=data['value'],
-                    percentage=percentage,
-                    count=data['count']
-                ))
-        except Exception as e:
-            print(f"Warning: Could not calculate asset allocation: {e}")
-            asset_allocation = []
-    
-    # Simple performance metrics
-    performance_metrics = schemas.PerformanceMetrics(
-        daily_return=None,
-        monthly_return=None,
-        yearly_return=total_return_percentage,
-        volatility=None,
-        sharpe_ratio=None,
-        max_drawdown=None,
-        beta=None,
-        alpha=None
-    )
-    
-        # Get recent transactions
-        recent_transactions = []
-        try:
-            recent_transactions = db.query(models.Transaction).join(
-                models.Portfolio
-            ).filter(
-                models.Portfolio.owner_id == current_user.id
-            ).order_by(
-                models.Transaction.created_at.desc()
-            ).limit(10).all()
-        except Exception as e:
-            print(f"Warning: Could not fetch recent transactions: {e}")
-            recent_transactions = []
-        
+        # Simple return data (no complex calculations)
         return schemas.DashboardData(
             portfolios=portfolio_summaries,
-            total_patrimony=total_patrimony,
-            total_invested=total_invested,
-            total_return=total_return,
-            total_return_percentage=total_return_percentage,
-            asset_allocation=asset_allocation,
-            performance_metrics=performance_metrics,
-            recent_transactions=recent_transactions
+            total_patrimony=0,
+            total_invested=0,
+            total_return=0,
+            total_return_percentage=0,
+            asset_allocation=[],
+            performance_metrics=schemas.PerformanceMetrics(
+                daily_return=None,
+                monthly_return=None,
+                yearly_return=0,
+                volatility=None,
+                sharpe_ratio=None,
+                max_drawdown=None,
+                beta=None,
+                alpha=None
+            ),
+            recent_transactions=[]
         )
     except Exception as e:
         print(f"Error in get_dashboard: {e}")
