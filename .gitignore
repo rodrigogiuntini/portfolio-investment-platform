@@ -151,3 +151,5 @@ frontend.pid
 *.md
 !README.md
 !DEPLOY_GUIDE.md
+!VERCEL_DEPLOY.md
+!RENDER_DEPLOY.md
