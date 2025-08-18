@@ -75,8 +75,8 @@ export default function Register() {
   };
 
   return (
-    <Box
-      sx={{
+      <Box
+        sx={{
         minHeight: '100vh',
         background: `linear-gradient(135deg, 
           ${alpha(theme.palette.background.default, 0.95)} 0%, 
@@ -165,17 +165,17 @@ export default function Register() {
                   WebkitTextFillColor: 'transparent',
                 }}>
                   Criar conta
-                </Typography>
+            </Typography>
                 <Typography variant="body1" color="text.secondary" sx={{ 
                   fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
                   lineHeight: 1.6,
                   mb: { xs: 1, sm: 1.5 }
                 }}>
                   Comece sua jornada de investimentos
-                </Typography>
-              </Box>
+            </Typography>
+          </Box>
 
-              {error && (
+          {error && (
                 <Alert 
                   severity="error" 
                   sx={{ 
@@ -185,12 +185,12 @@ export default function Register() {
                     border: `1px solid ${alpha(theme.palette.error.main, 0.2)}`,
                   }}
                 >
-                  {error}
-                </Alert>
-              )}
+              {error}
+            </Alert>
+          )}
 
               {/* Register Form */}
-              <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+          <Box component="form" onSubmit={handleSubmit(onSubmit)}>
                 <Box sx={{ mb: { xs: 3.5, sm: 4 } }}>
                   <Typography variant="body2" sx={{ 
                     mb: { xs: 1.5, sm: 2 }, 
@@ -200,22 +200,22 @@ export default function Register() {
                   }}>
                     Endereço de e-mail
                   </Typography>
-                  <TextField
-                    fullWidth
-                    id="email"
+            <TextField
+              fullWidth
+              id="email"
                     placeholder="Digite seu e-mail"
-                    autoComplete="email"
-                    autoFocus
+              autoComplete="email"
+              autoFocus
                     variant="outlined"
-                    {...register('email', {
-                      required: 'E-mail é obrigatório',
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: 'E-mail inválido',
-                      },
-                    })}
-                    error={!!errors.email}
-                    helperText={errors.email?.message}
+              {...register('email', {
+                required: 'E-mail é obrigatório',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'E-mail inválido',
+                },
+              })}
+              error={!!errors.email}
+              helperText={errors.email?.message}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: 3,
@@ -257,18 +257,18 @@ export default function Register() {
                         },
                       },
                     }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
                           <Email sx={{ 
                             color: alpha(theme.palette.text.secondary, 0.7),
                             fontSize: { xs: '1.2rem', sm: '1.3rem' },
                             mr: 0.5
                           }} />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+                  </InputAdornment>
+                ),
+              }}
+            />
                 </Box>
 
                 <Box sx={{ mb: { xs: 3.5, sm: 4 } }}>
@@ -280,21 +280,21 @@ export default function Register() {
                   }}>
                     Nome de usuário
                   </Typography>
-                  <TextField
-                    fullWidth
-                    id="username"
+            <TextField
+              fullWidth
+              id="username"
                     placeholder="Digite seu nome de usuário"
-                    autoComplete="username"
+              autoComplete="username"
                     variant="outlined"
-                    {...register('username', {
-                      required: 'Nome de usuário é obrigatório',
-                      minLength: {
-                        value: 3,
-                        message: 'Nome de usuário deve ter no mínimo 3 caracteres',
-                      },
-                    })}
-                    error={!!errors.username}
-                    helperText={errors.username?.message}
+              {...register('username', {
+                required: 'Nome de usuário é obrigatório',
+                minLength: {
+                  value: 3,
+                  message: 'Nome de usuário deve ter no mínimo 3 caracteres',
+                },
+              })}
+              error={!!errors.username}
+              helperText={errors.username?.message}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: 3,
@@ -336,18 +336,18 @@ export default function Register() {
                         },
                       },
                     }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
                           <Person sx={{ 
                             color: alpha(theme.palette.text.secondary, 0.7),
                             fontSize: { xs: '1.2rem', sm: '1.3rem' },
                             mr: 0.5
                           }} />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+                  </InputAdornment>
+                ),
+              }}
+            />
                 </Box>
 
                 <Box sx={{ mb: { xs: 3.5, sm: 4 } }}>
@@ -359,22 +359,22 @@ export default function Register() {
                   }}>
                     Senha
                   </Typography>
-                  <TextField
-                    fullWidth
+            <TextField
+              fullWidth
                     placeholder="Digite sua senha"
-                    type={showPassword ? 'text' : 'password'}
-                    id="password"
+              type={showPassword ? 'text' : 'password'}
+              id="password"
                     variant="outlined"
-                    autoComplete="new-password"
-                    {...register('password', {
-                      required: 'Senha é obrigatória',
-                      minLength: {
-                        value: 6,
-                        message: 'Senha deve ter no mínimo 6 caracteres',
-                      },
-                    })}
-                    error={!!errors.password}
-                    helperText={errors.password?.message}
+              autoComplete="new-password"
+              {...register('password', {
+                required: 'Senha é obrigatória',
+                minLength: {
+                  value: 6,
+                  message: 'Senha deve ter no mínimo 6 caracteres',
+                },
+              })}
+              error={!!errors.password}
+              helperText={errors.password?.message}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: 3,
@@ -416,22 +416,22 @@ export default function Register() {
                         },
                       },
                     }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
                           <Lock sx={{ 
                             color: alpha(theme.palette.text.secondary, 0.7),
                             fontSize: { xs: '1.2rem', sm: '1.3rem' },
                             mr: 0.5
                           }} />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={() => setShowPassword(!showPassword)}
-                            edge="end"
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
                             sx={{ 
                               color: alpha(theme.palette.text.secondary, 0.7),
                               p: { xs: 1, sm: 1.5 },
@@ -441,13 +441,13 @@ export default function Register() {
                               },
                               transition: 'all 0.2s ease',
                             }}
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
                 </Box>
 
                 <Box sx={{ mb: { xs: 3.5, sm: 4 } }}>
@@ -459,20 +459,20 @@ export default function Register() {
                   }}>
                     Confirmar senha
                   </Typography>
-                  <TextField
-                    fullWidth
+            <TextField
+              fullWidth
                     placeholder="Digite sua senha novamente"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    id="confirmPassword"
+              type={showConfirmPassword ? 'text' : 'password'}
+              id="confirmPassword"
                     variant="outlined"
-                    autoComplete="new-password"
-                    {...register('confirmPassword', {
-                      required: 'Confirmação de senha é obrigatória',
-                      validate: (value) =>
-                        value === password || 'As senhas não coincidem',
-                    })}
-                    error={!!errors.confirmPassword}
-                    helperText={errors.confirmPassword?.message}
+              autoComplete="new-password"
+              {...register('confirmPassword', {
+                required: 'Confirmação de senha é obrigatória',
+                validate: (value) =>
+                  value === password || 'As senhas não coincidem',
+              })}
+              error={!!errors.confirmPassword}
+              helperText={errors.confirmPassword?.message}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: 3,
@@ -514,22 +514,22 @@ export default function Register() {
                         },
                       },
                     }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
                           <Lock sx={{ 
                             color: alpha(theme.palette.text.secondary, 0.7),
                             fontSize: { xs: '1.2rem', sm: '1.3rem' },
                             mr: 0.5
                           }} />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            edge="end"
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      edge="end"
                             sx={{ 
                               color: alpha(theme.palette.text.secondary, 0.7),
                               p: { xs: 1, sm: 1.5 },
@@ -539,20 +539,20 @@ export default function Register() {
                               },
                               transition: 'all 0.2s ease',
                             }}
-                          >
-                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
                 </Box>
 
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  disabled={loading}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={loading}
                   sx={{
                     py: { xs: 1.25, sm: 1.5 },
                     borderRadius: { xs: 1.5, sm: 2 },
@@ -573,15 +573,15 @@ export default function Register() {
                     transition: 'all 0.3s ease',
                     mb: { xs: 4, sm: 5 },
                   }}
-                >
-                  {loading ? 'Criando conta...' : 'Criar conta'}
-                </Button>
+            >
+              {loading ? 'Criando conta...' : 'Criar conta'}
+            </Button>
 
-                <Box sx={{ textAlign: 'center' }}>
+            <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="body2" color="text.secondary" sx={{ 
                     fontSize: { xs: '0.875rem', sm: '0.875rem' }
                   }}>
-                    Já tem uma conta?{' '}
+                Já tem uma conta?{' '}
                     <Link 
                       to="/login" 
                       style={{ 
@@ -590,11 +590,11 @@ export default function Register() {
                         fontWeight: 600,
                       }}
                     >
-                      Faça login
-                    </Link>
-                  </Typography>
-                </Box>
-              </Box>
+                  Faça login
+                </Link>
+              </Typography>
+            </Box>
+          </Box>
             </Box>
           </Grid>
 
@@ -817,10 +817,10 @@ export default function Register() {
                   </Grid>
                 </Grid>
               </Box>
-            </Box>
+      </Box>
           </Grid>
         </Grid>
-      </Container>
+    </Container>
     </Box>
   );
 }
